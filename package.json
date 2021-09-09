@@ -1,0 +1,31 @@
+{
+  "name": "gordion",
+  "version": "0.0.7",
+  "description": "Gordion: a web app engine",
+  "main": "dist/index.js",
+  "scripts": {
+    "compile": "rimraf dist && tsc && babel src --out-dir dist --extensions .ts",
+    "nd": "nodemon"
+  },
+  "author": "vuk",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-typescript": "^7.13.0",
+    "@tsconfig/node16": "^1.0.1",
+    "typescript": "^4.2.4",
+    "@types/node": "^15.0.1",
+    "chalk": "^2.4.2",
+    "loglevel": "^1.7.1",
+    "nodemon": "^2.0.7",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "bottlejs": "^2.0.0",
+    "filehound": "^1.17.4",
+    "find-my-way": "^4.1.0",
+    "nunjucks": "^3.2.3"
+  }
+}
