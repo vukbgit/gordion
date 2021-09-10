@@ -1,14 +1,16 @@
 {
   "name": "gordion",
   "version": "0.0.9",
-  "description": "Gordion: a web app engine",
+  "author": "vuk",
+  "description": "A Node.js typescript web app engine",
+  "license": "ISC",
+  "repository": "https://github.com/vukbgit/gordion",
   "main": "dist/index.js",
   "scripts": {
     "compile": "rimraf dist && tsc && babel src --out-dir dist --extensions .ts",
-    "nd": "nodemon"
+    "nd": "nodemon",
+    "test": "cd ../.. && npm run test2"
   },
-  "author": "vuk",
-  "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
@@ -26,6 +28,7 @@
     "bottlejs": "^2.0.0",
     "filehound": "^1.17.4",
     "find-my-way": "^4.1.0",
-    "nunjucks": "^3.2.3"
+    "nunjucks": "^3.2.3",
+    "migrate": "^1.7.0"
   }
 }
