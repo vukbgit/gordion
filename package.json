@@ -9,8 +9,10 @@
   "scripts": {
     "compile": "rimraf dist && tsc && babel src --out-dir dist --extensions .ts",
     "nd": "nodemon",
-    "test": "cd ../.. && npm run test2",
-    "create-gordion-migration": "npx migrate create -t src/migrater/templates/standard.js"
+    "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
+  },
+  "directories" : {
+    "bin": "dist/bin"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
@@ -20,6 +22,7 @@
     "@tsconfig/node16": "^1.0.1",
     "typescript": "^4.2.4",
     "@types/node": "^15.0.1",
+    "@types/nunjucks": "^3.1.5",
     "chalk": "^2.4.2",
     "nodemon": "^2.0.7",
     "rimraf": "^3.0.2"
