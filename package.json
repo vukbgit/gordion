@@ -1,6 +1,6 @@
 {
   "name": "gordion",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "vuk",
   "description": "A Node.js typescript web app engine",
   "license": "ISC",
@@ -11,7 +11,7 @@
     "nd": "nodemon",
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
-  "directories" : {
+  "directories": {
     "bin": "dist/bin"
   },
   "devDependencies": {
