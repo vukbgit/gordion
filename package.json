@@ -33,6 +33,7 @@
     "loglevel": "^1.7.1",
     "find-my-way": "^4.1.0",
     "nunjucks": "^3.2.3",
-    "migrate": "^1.7.0"
+    "migrate": "^1.7.0",
+    "commander": "^8.2.0"
   }
 }
