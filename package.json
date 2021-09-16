@@ -12,7 +12,6 @@
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
   "bin": {
-    "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
     "gordion-compile-gordion": "dist/bin/compile-gordion.js"
   },
   "devDependencies": {
