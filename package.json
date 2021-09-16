@@ -11,7 +11,10 @@
     "nd": "nodemon",
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
-  "bin": {},
+  "bin": {
+    "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
+    "gordion-compile-gordion": "dist/bin/compile-gordion.js"
+  },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
