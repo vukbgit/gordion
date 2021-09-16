@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 import * as child from 'child_process';
 import { Command } from 'commander';
-const program = new Command('gordion-migration-builder');
+const program = new Command();
 import { logger } from '../logger'
 
 logger.setLevel('INFO')
 
 program
-  .description('Creates a migration for Gordion package')
-  .argument('<name>', 'the name of the migration')
-  .action((name: string, options: [string], command: Command) => {
-    var foo: child.ChildProcess = child.exec(
-      'npx migrate create ' + name,
+  .description('compiles Gordion package')
+  .action((options: [string], command: Command) => {
+    child.exec(
+      'npm run compile',
       {
         'cwd': 'node_modules/gordion',
       },
