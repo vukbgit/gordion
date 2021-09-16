@@ -1,6 +1,6 @@
 {
   "name": "gordion",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "author": "vuk",
   "description": "A Node.js typescript web app engine",
   "license": "ISC",
@@ -11,8 +11,7 @@
     "nd": "nodemon",
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
-  "bin": {
-  },
+  "bin": {},
   "devDependencies": {
     "@babel/cli": "^7.13.16",
     "@babel/core": "^7.13.16",
