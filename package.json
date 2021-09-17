@@ -13,7 +13,8 @@
   },
   "bin": {
     "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
-    "gordion-compile-gordion": "dist/bin/compile-gordion.js"
+    "gordion-compile-gordion": "dist/bin/compile-gordion.js",
+    "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
