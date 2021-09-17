@@ -5,9 +5,9 @@
  */
 import * as child from 'child_process';
 import * as childPromise from 'child-process-promise';
-import { logger } from '../logger'
+import { logLevels,logger } from '../logger'
 
-logger.setLevel('INFO')
+logger.setLevel(process.env.LOG_LEVEL as keyof typeof logLevels)
 
 /**
  * Shell Commander class
@@ -20,16 +20,30 @@ export class ShellCommander {
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
-   public exec(command: string, options?: {}): void {
+   public async exec(command: string, options?: {}) {
     logger.info('GORDION SHELL COMMANDER: ' + command);
-    childPromise.exec(
+    /*childPromise.exec(
       command,
       options
     ).then(function (result) {
       logger.info(result.stdout)
+      return result
     }).catch(function (err) {
-      logger.error(err);
-    })
+      logger.error(err)
+      return err
+    })*/
+    let result
+    try {
+      result = await childPromise.exec(
+        command,
+        options
+      )
+      logger.info(result.stdout)
+    } catch(err) {
+      logger.error(err)
+      result = err
+    }
+    return result
    }
 }
 //the logger instance

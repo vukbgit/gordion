@@ -11,4 +11,4 @@ program.description('compiles Gordion package').action((options, command) => {
   _shellCommander.shellCommander.exec('npm run compile', {
     'cwd': 'node_modules/gordion'
   });
-}).parse(process.argv);
+}).parse();

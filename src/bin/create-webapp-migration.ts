@@ -7,8 +7,9 @@ program
   .description('Creates a migration for webapp')
   .argument('<name>', 'the name of the migration')
   .action((name: string, options: [string], command: Command) => {
-    shellCommander.exec(
+    const result = shellCommander.exec(
       'npx migrate create ' + name
     )
+
   })
-  .parse(process.argv)
+  .parse()

@@ -18,7 +18,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
  * @module
  * @beta
  */
-_logger.logger.setLevel('INFO');
+_logger.logger.setLevel(process.env.LOG_LEVEL);
 /**
  * Shell Commander class
  * @beta
@@ -31,14 +31,33 @@ class ShellCommander {
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
-  exec(command, options) {
+  async exec(command, options) {
     _logger.logger.info('GORDION SHELL COMMANDER: ' + command);
-
-    childPromise.exec(command, options).then(function (result) {
-      _logger.logger.info(result.stdout);
+    /*childPromise.exec(
+      command,
+      options
+    ).then(function (result) {
+      logger.info(result.stdout)
+      return result
     }).catch(function (err) {
+      logger.error(err)
+      return err
+    })*/
+
+
+    let result;
+
+    try {
+      result = await childPromise.exec(command, options);
+
+      _logger.logger.info(result.stdout);
+    } catch (err) {
       _logger.logger.error(err);
-    });
+
+      result = err;
+    }
+
+    return result;
   }
 
 } //the logger instance

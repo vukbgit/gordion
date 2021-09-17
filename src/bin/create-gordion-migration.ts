@@ -14,4 +14,4 @@ program
       }
     )
   })
-  .parse(process.argv)
+  .parse()

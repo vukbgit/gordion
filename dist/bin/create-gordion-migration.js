@@ -10,4 +10,4 @@ program.description('Creates a migration for Gordion package').argument('<name>'
   _shellCommander.shellCommander.exec('npx migrate create ' + name, {
     'cwd': 'node_modules/gordion'
   });
-}).parse(process.argv);
+}).parse();

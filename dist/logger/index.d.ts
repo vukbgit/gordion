@@ -2,7 +2,7 @@
  * Possible log levels
  * @beta
  */
-declare enum logLevels {
+export declare enum logLevels {
     TRACE = 0,
     DEBUG = 1,
     INFO = 2,

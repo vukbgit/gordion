@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logger = exports.Logger = void 0;
+exports.logger = exports.Logger = exports.logLevels = void 0;
 
 var _util = _interopRequireDefault(require("util"));
 
@@ -23,11 +23,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Possible log levels
  * @beta
  */
-var logLevels;
+let logLevels;
 /**
  * Logger class
  * @beta
  */
+
+exports.logLevels = logLevels;
 
 (function (logLevels) {
   logLevels[logLevels["TRACE"] = 0] = "TRACE";
@@ -35,7 +37,7 @@ var logLevels;
   logLevels[logLevels["INFO"] = 2] = "INFO";
   logLevels[logLevels["WARN"] = 3] = "WARN";
   logLevels[logLevels["ERROR"] = 4] = "ERROR";
-})(logLevels || (logLevels = {}));
+})(logLevels || (exports.logLevels = logLevels = {}));
 
 class Logger {
   /**
@@ -146,3 +148,4 @@ class Logger {
 exports.Logger = Logger;
 const logger = new Logger();
 exports.logger = logger;
+logger.setLevel(process.env.LOG_LEVEL);

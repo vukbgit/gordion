@@ -18,19 +18,4 @@ program.description('installs Gordion package dev dependencies').action((options
   }
 
   _shellCommander.shellCommander.exec(installCommand);
-  /*child.exec(
-    installCommand,
-    {},
-    (error, stdout, stderr) => {
-      if (error) {
-        logger.error(error);
-        return;
-      }
-      logger.info(stdout);
-      if(stderr) {
-        logger.error(stderr);
-      }
-    }
-  )*/
-
-}).parse(process.argv);
+}).parse();
