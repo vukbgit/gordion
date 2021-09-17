@@ -4,7 +4,7 @@
  */
 export declare class ShellCommander {
     /**
-     * Execs a command
+     * Execs a shell command
      * @param command - command string to be executed
      * @param options - object with options, see https://www.npmjs.com/package/commander#options
      */

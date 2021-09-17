@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.shellCommander = exports.ShellCommander = void 0;
 
-var child = _interopRequireWildcard(require("child_process"));
+var childPromise = _interopRequireWildcard(require("child-process-promise"));
 
 var _logger = require("../logger");
 
@@ -27,25 +27,17 @@ _logger.logger.setLevel('INFO');
 
 class ShellCommander {
   /**
-   * Execs a command
+   * Execs a shell command
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
   exec(command, options) {
     _logger.logger.info('GORDION SHELL COMMANDER: ' + command);
 
-    child.exec(command, options, (error, stdout, stderr) => {
-      if (error) {
-        _logger.logger.error(error);
-
-        return;
-      }
-
-      _logger.logger.info(stdout);
-
-      if (stderr) {
-        _logger.logger.error(stderr);
-      }
+    childPromise.exec(command, options).then(function (result) {
+      _logger.logger.info(result.stdout);
+    }).catch(function (err) {
+      _logger.logger.error(err);
     });
   }
 
