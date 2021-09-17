@@ -15,7 +15,7 @@
 export { logger } from "./logger";
 
 /**
- * Re-exports an instance of the {@link diContainer} class.
+ * Re-exports an instance of the {@link DIContainer} class.
  * @public
  */
 export { dIContainer } from "./di-container";
@@ -31,3 +31,9 @@ export { router } from "./router";
  * @public
  */
 export { templater } from "./templater";
+
+/**
+ * Re-exports an instance of the {@link shellCommander} class.
+ * @public
+ */
+export { shellCommander } from "./shell-commander";

@@ -27,6 +27,12 @@ Object.defineProperty(exports, "templater", {
     return _templater.templater;
   }
 });
+Object.defineProperty(exports, "shellCommander", {
+  enumerable: true,
+  get: function () {
+    return _shellCommander.shellCommander;
+  }
+});
 
 var _logger = require("./logger");
 
@@ -35,3 +41,5 @@ var _diContainer = require("./di-container");
 var _router = require("./router");
 
 var _templater = require("./templater");
+
+var _shellCommander = require("./shell-commander");
