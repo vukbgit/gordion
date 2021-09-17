@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-//import * as child from 'child_process';
 import { Command } from 'commander';
 const program = new Command();
-//import { logger } from '../logger'
 import { shellCommander } from '../shell-commander'
 
 //logger.setLevel('INFO')
