@@ -12,9 +12,10 @@
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
   "bin": {
-    "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
     "gordion-compile-gordion": "dist/bin/compile-gordion.js",
-    "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js"
+    "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js",
+    "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
+    "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",

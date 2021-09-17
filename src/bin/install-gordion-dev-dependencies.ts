@@ -1,10 +1,7 @@
 #!/usr/bin/env node
-import * as child from 'child_process';
 import { Command } from 'commander';
 const program = new Command();
-import { logger } from '../logger'
-
-logger.setLevel('INFO')
+import { shellCommander } from '../shell-commander'
 
 program
   .description('installs Gordion package dev dependencies')
@@ -16,8 +13,10 @@ program
       const version = packageJson.devDependencies[pkg]
       installCommand += ' ' + pkg + '@' + version
     }
-    logger.info(installCommand)
-    child.exec(
+    shellCommander.exec(
+      installCommand
+    )
+    /*child.exec(
       installCommand,
       {},
       (error, stdout, stderr) => {
@@ -30,6 +29,6 @@ program
           logger.error(stderr);
         }
       }
-    )
+    )*/
   })
   .parse(process.argv)
