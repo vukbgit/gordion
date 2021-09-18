@@ -146,6 +146,6 @@ class Logger {
 
 
 exports.Logger = Logger;
-const logger = new Logger(); //logger.setLevel(process.env.LOG_LEVEL as keyof typeof logLevels)
-
+const logger = new Logger();
 exports.logger = logger;
+logger.setLevel(process.env.LOG_LEVEL);
