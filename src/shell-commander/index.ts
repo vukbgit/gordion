@@ -5,9 +5,7 @@
  */
 import * as child from 'child_process';
 import * as childPromise from 'child-process-promise';
-import { logLevels,logger } from '../logger'
-
-logger.setLevel(process.env.LOG_LEVEL as keyof typeof logLevels)
+import { logger } from '../logger'
 
 /**
  * Shell Commander class

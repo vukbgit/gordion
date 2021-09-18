@@ -112,6 +112,6 @@ export class Logger {
 //the logger instance
 const logger = new Logger()
 
-logger.setLevel(process.env.LOG_LEVEL as keyof typeof logLevels)
+//logger.setLevel(process.env.LOG_LEVEL as keyof typeof logLevels)
 
 export { logger }

@@ -18,13 +18,11 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
  * @module
  * @beta
  */
-_logger.logger.setLevel(process.env.LOG_LEVEL);
+
 /**
  * Shell Commander class
  * @beta
  */
-
-
 class ShellCommander {
   /**
    * Execs a shell command
