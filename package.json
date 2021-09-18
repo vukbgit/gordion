@@ -15,7 +15,8 @@
     "gordion-compile-gordion": "dist/bin/compile-gordion.js",
     "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js",
     "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
-    "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js"
+    "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js",
+    "gordion-symlink-gordion-executables": "dist/bin/symlink-gordion-executables.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
@@ -37,6 +38,7 @@
     "find-my-way": "^4.1.0",
     "nunjucks": "^3.2.3",
     "migrate": "^1.7.0",
-    "commander": "^8.2.0"
+    "commander": "^8.2.0",
+    "child-process-promise": "^2.2.1"
   }
 }
