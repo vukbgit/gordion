@@ -7,7 +7,8 @@
   "repository": "https://github.com/vukbgit/gordion",
   "main": "dist/index.js",
   "scripts": {
-    "compile": "rimraf dist && tsc && babel src --out-dir dist --extensions .ts",
+    "compile": "tsc && babel src --out-dir dist --extensions .ts",
+    "compile-clean": "rimraf dist && tsc && babel src --out-dir dist --extensions .ts",
     "nd": "nodemon",
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
