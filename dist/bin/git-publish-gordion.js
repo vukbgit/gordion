@@ -7,8 +7,6 @@ var _enquirer = require("enquirer");
 
 var _shellCommander = require("../shell-commander");
 
-var _logger = require("../logger");
-
 const program = new _commander.Command();
 
 (async () => {
@@ -24,10 +22,6 @@ async function gitStatus() {
 async function selectFilesToPublish() {
   const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true);
   let files = result.stdout.trim().split('\n');
-
-  _logger.logger.warn(files);
-
-  _logger.logger.warn(files.length);
 
   if (files.length == 0 || files.length == 1 && files[0] == '') {
     return false;
