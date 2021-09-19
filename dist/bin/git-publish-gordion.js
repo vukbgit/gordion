@@ -43,7 +43,7 @@ async function selectFilesToPublish() {
     });
 
     if (input.selectedFiles.indexOf('ALL') !== -1) {
-      input.selectedFiles = result.stdout.split('\n');
+      input.selectedFiles = result.stdout.split(/\r?\n/);
     }
 
     return input.selectedFiles;
