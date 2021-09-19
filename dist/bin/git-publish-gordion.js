@@ -41,8 +41,8 @@ async function askGitCommitMessage() {
   return input.message;
 }
 
-async function gitCommitAll(message) {
-  const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '"');
+async function gitPublish(message) {
+  const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '" && git push');
   return commit;
 }
 
@@ -52,7 +52,7 @@ async function publishToGIT() {
 
   if (doPublish) {
     const message = await askGitCommitMessage();
-    const commit = await gitCommitAll(message);
+    const commit = await gitPublish(message);
   } else {
     _logger.logger.warn('GIT publication aborted by user');
   }

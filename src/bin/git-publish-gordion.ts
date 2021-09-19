@@ -38,8 +38,8 @@ import { logger } from '../logger'
     return input.message
   }
 
-  async function gitCommitAll(message: string) {
-    const commit = await shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '"')
+  async function gitPublish(message: string) {
+    const commit = await shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '" && git push')
     return commit
   }
   
@@ -48,7 +48,7 @@ import { logger } from '../logger'
     const doPublish = await askGitPublish()
     if(doPublish) {
       const message = await askGitCommitMessage()
-      const commit = await gitCommitAll(message)
+      const commit = await gitPublish(message)
     } else {
       logger.warn('GIT publication aborted by user')
     }
