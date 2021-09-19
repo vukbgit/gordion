@@ -3,7 +3,6 @@
  * @module
  * @beta
  */
-import * as child from 'child_process';
 import * as childPromise from 'child-process-promise';
 import { logger } from '../logger'
 
@@ -18,30 +17,26 @@ export class ShellCommander {
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
-   public async exec(command: string, options?: {}) {
-    logger.info('GORDION SHELL COMMANDER: ' + command);
-    /*childPromise.exec(
-      command,
-      options
-    ).then(function (result) {
-      logger.info(result.stdout)
-      return result
-    }).catch(function (err) {
-      logger.error(err)
-      return err
-    })*/
-    let result
+   public async exec(command: string, options?: {}, silent: boolean=false): Promise<childPromise.PromiseResult<string>> {
+    if(silent !== true) {
+      logger.info('GORDION SHELL COMMANDER: ' + command)
+    }
     try {
+      let result: childPromise.PromiseResult<string>
       result = await childPromise.exec(
         command,
         options
       )
-      logger.info(result.stdout)
-    } catch(err) {
+      if(silent !== true) {
+        logger.info(result.stdout)
+      }
+      return result
+    } catch(err: any) {
+      let result: childPromise.PromiseResult<string>
       logger.error(err)
       result = err
+      return result
     }
-    return result
    }
 }
 //the logger instance

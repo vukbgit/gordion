@@ -29,33 +29,28 @@ class ShellCommander {
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
-  async exec(command, options) {
-    _logger.logger.info('GORDION SHELL COMMANDER: ' + command);
-    /*childPromise.exec(
-      command,
-      options
-    ).then(function (result) {
-      logger.info(result.stdout)
-      return result
-    }).catch(function (err) {
-      logger.error(err)
-      return err
-    })*/
-
-
-    let result;
+  async exec(command, options, silent = false) {
+    if (silent !== true) {
+      _logger.logger.info('GORDION SHELL COMMANDER: ' + command);
+    }
 
     try {
+      let result;
       result = await childPromise.exec(command, options);
 
-      _logger.logger.info(result.stdout);
+      if (silent !== true) {
+        _logger.logger.info(result.stdout);
+      }
+
+      return result;
     } catch (err) {
+      let result;
+
       _logger.logger.error(err);
 
       result = err;
+      return result;
     }
-
-    return result;
   }
 
 } //the logger instance
