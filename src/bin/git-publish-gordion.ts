@@ -23,7 +23,7 @@ import { logger } from '../logger'
     let files = result.stdout.trim().split('\n')
     logger.warn(files)
     logger.warn(files.length)
-    if(files.length == 0) {
+    if(files.length == 0 || (files.length == 1 && files[0] == '')) {
       return false
     } else {
       files.unshift('ALL')

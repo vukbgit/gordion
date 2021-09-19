@@ -29,7 +29,7 @@ async function selectFilesToPublish() {
 
   _logger.logger.warn(files.length);
 
-  if (files.length == 0) {
+  if (files.length == 0 || files.length == 1 && files[0] == '') {
     return false;
   } else {
     files.unshift('ALL');
