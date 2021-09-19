@@ -30,9 +30,7 @@
     "@types/nunjucks": "^3.1.5",
     "chalk": "^2.4.2",
     "nodemon": "^2.0.7",
-    "rimraf": "^3.0.2",
-    "prompts": "^2.4.1",
-    "@types/prompts": "^2.0.14"
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "bottlejs": "^2.0.0",
