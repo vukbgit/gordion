@@ -21,7 +21,7 @@ async function gitStatus() {
 
 async function selectFilesToPublish() {
   const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true);
-  let files = result.stdout.split('\n');
+  let files = result.stdout.trim().split('\n');
 
   if (files.length == 0) {
     return false;
