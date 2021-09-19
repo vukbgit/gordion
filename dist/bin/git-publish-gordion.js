@@ -53,6 +53,8 @@ async function publishToGIT() {
   if (doPublish) {
     const message = await askGitCommitMessage();
     const commit = await gitPublish(message);
+
+    _logger.logger.debug(commit);
   } else {
     _logger.logger.warn('GIT publication aborted by user');
   }

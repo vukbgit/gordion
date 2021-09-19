@@ -49,6 +49,7 @@ import { logger } from '../logger'
     if(doPublish) {
       const message = await askGitCommitMessage()
       const commit = await gitPublish(message)
+      logger.debug(commit)
     } else {
       logger.warn('GIT publication aborted by user')
     }
