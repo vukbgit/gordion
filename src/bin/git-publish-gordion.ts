@@ -21,7 +21,9 @@ import { logger } from '../logger'
   async function selectFilesToPublish() {
     const result = await shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true)
     let files = result.stdout.split('\n')
-    if(files.length > 0) {
+    if(files.length === 0) {
+      return false
+    } else {
       files.unshift('ALL')
     }
     try {
@@ -60,10 +62,7 @@ import { logger } from '../logger'
     await gitStatus()
     const filesToPublish = await selectFilesToPublish()
     if(filesToPublish !== false) {
-
       const message = await askGitCommitMessage()
       const commit = await gitPublish(filesToPublish, message)
-    } else {
-    logger.warn('GIT publication aborted by user')
     }
   }

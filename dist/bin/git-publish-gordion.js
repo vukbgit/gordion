@@ -7,8 +7,6 @@ var _enquirer = require("enquirer");
 
 var _shellCommander = require("../shell-commander");
 
-var _logger = require("../logger");
-
 const program = new _commander.Command();
 
 (async () => {
@@ -25,7 +23,9 @@ async function selectFilesToPublish() {
   const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true);
   let files = result.stdout.split('\n');
 
-  if (files.length > 0) {
+  if (files.length === 0) {
+    return false;
+  } else {
     files.unshift('ALL');
   }
 
@@ -70,7 +70,5 @@ async function publishToGIT() {
   if (filesToPublish !== false) {
     const message = await askGitCommitMessage();
     const commit = await gitPublish(filesToPublish, message);
-  } else {
-    _logger.logger.warn('GIT publication aborted by user');
   }
 }
