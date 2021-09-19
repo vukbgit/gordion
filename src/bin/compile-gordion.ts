@@ -9,7 +9,6 @@ program
   .option('-c, --clean', 'cleans dist folder before compiling')
   .option('-t, --test <fake>', 'test')
   .action((options, command: Command) => {
-    logger.info(options.clean)
     const compileCommand = typeof options.clean != 'undefined' && options.clean === true ? 'npm run compile-clean' : 'npm run compile'
     //const compileCommand = 'npm run compile'
     shellCommander.exec(

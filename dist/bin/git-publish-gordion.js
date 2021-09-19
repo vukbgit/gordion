@@ -21,14 +21,31 @@ async function gitStatus() {
   return status;
 }
 
-async function askGitPublish() {
-  const input = await (0, _enquirer.prompt)({
-    type: 'confirm',
-    name: 'doPublish',
-    initial: true,
-    message: 'Publish all files to GIT repository?'
-  });
-  return input.doPublish;
+async function selectFilesToPublish() {
+  const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true);
+  let files = result.stdout.split('\n');
+
+  if (files.length > 0) {
+    files.unshift('ALL');
+  }
+
+  try {
+    const input = await (0, _enquirer.prompt)({
+      type: 'multiselect',
+      name: 'selectedFiles',
+      //initial: true,
+      message: 'Select files to be published (ESC to abort)',
+      choices: files
+    });
+
+    if (input.selectedFiles.indexOf('ALL') !== -1) {
+      input.selectedFiles = result.stdout.split('\n');
+    }
+
+    return input.selectedFiles;
+  } catch (e) {
+    return false;
+  }
 }
 
 async function askGitCommitMessage() {
@@ -41,20 +58,18 @@ async function askGitCommitMessage() {
   return input.message;
 }
 
-async function gitPublish(message) {
-  const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '" && git push');
+async function gitPublish(filesToPublish, message) {
+  const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push');
   return commit;
 }
 
 async function publishToGIT() {
   await gitStatus();
-  const doPublish = await askGitPublish();
+  const filesToPublish = await selectFilesToPublish();
 
-  if (doPublish) {
+  if (filesToPublish !== false) {
     const message = await askGitCommitMessage();
-    const commit = await gitPublish(message);
-
-    _logger.logger.debug(commit);
+    const commit = await gitPublish(filesToPublish, message);
   } else {
     _logger.logger.warn('GIT publication aborted by user');
   }

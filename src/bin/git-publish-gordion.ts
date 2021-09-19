@@ -18,16 +18,29 @@ import { logger } from '../logger'
     return status
   }
   
-  async function askGitPublish() {
-    const input: Record<string,any> = await prompt({
-      type: 'confirm',
-      name: 'doPublish',
-      initial: true,
-      message: 'Publish all files to GIT repository?'
-    })
-    return input.doPublish
+  async function selectFilesToPublish() {
+    const result = await shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true)
+    let files = result.stdout.split('\n')
+    if(files.length > 0) {
+      files.unshift('ALL')
+    }
+    try {
+      const input: Record<string,any> = await prompt({
+        type: 'multiselect',
+        name: 'selectedFiles',
+        //initial: true,
+        message: 'Select files to be published (ESC to abort)',
+        choices: files
+      })
+      if(input.selectedFiles.indexOf('ALL') !== -1) {
+        input.selectedFiles = result.stdout.split('\n')
+      }
+      return input.selectedFiles
+    } catch(e) {
+      return false
+    }
   }
-  
+
   async function askGitCommitMessage() {
     const input: Record<string,any> = await prompt({
       type: 'input',
@@ -38,19 +51,19 @@ import { logger } from '../logger'
     return input.message
   }
 
-  async function gitPublish(message: string) {
-    const commit = await shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '" && git push')
+  async function gitPublish(filesToPublish: [string],message: string) {
+    const commit = await shellCommander.exec('cd node_modules/gordion && git add ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push')
     return commit
   }
   
   async function publishToGIT() {
     await gitStatus()
-    const doPublish = await askGitPublish()
-    if(doPublish) {
+    const filesToPublish = await selectFilesToPublish()
+    if(filesToPublish !== false) {
+
       const message = await askGitCommitMessage()
-      const commit = await gitPublish(message)
-      logger.debug(commit)
+      const commit = await gitPublish(filesToPublish, message)
     } else {
-      logger.warn('GIT publication aborted by user')
+    logger.warn('GIT publication aborted by user')
     }
   }
