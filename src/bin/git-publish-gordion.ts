@@ -2,6 +2,7 @@
 import * as path from 'path';
 import { Command } from 'commander';
 const program = new Command();
+import { prompt } from 'enquirer';
 import { shellCommander } from '../shell-commander'
 import { logger } from '../logger'
 
@@ -18,26 +19,37 @@ import { logger } from '../logger'
   }
   
   async function askGitPublish() {
-    /*const doPublish = await prompts({
-      type: 'toggle',
-      name: 'value',
-      message: 'Publish all of the files to GIT repository?',
+    const input: Record<string,any> = await prompt({
+      type: 'confirm',
+      name: 'doPublish',
       initial: true,
-      active: 'yes',
-      inactive: 'no'
-    });
-    return doPublish*/
+      message: 'Publish all files to GIT repository?'
+    })
+    return input.doPublish
+  }
+  
+  async function askGitCommitMessage() {
+    const input: Record<string,any> = await prompt({
+      type: 'input',
+      name: 'message',
+      initial: 'Gordion commit',
+      message: 'GIT commit message'
+    })
+    return input.message
   }
 
+  async function gitCommitAll(message: string) {
+    const commit = await shellCommander.exec('cd node_modules/gordion && git add . && git commit -m "' + message + '"')
+    return commit
+  }
+  
   async function publishToGIT() {
     await gitStatus()
     const doPublish = await askGitPublish()
-    logger.debug(doPublish)
-    /*let command = 'cd node_modules/.bin';
-    files.forEach((file: string) => {
-      command += ' && ln -sf ../gordion/dist/bin/' + path.basename(file) + ' gordion-' + path.basename(file, '.js')
-    });
-    shellCommander.exec(
-      command
-    )*/
+    if(doPublish) {
+      const message = await askGitCommitMessage()
+      const commit = await gitCommitAll(message)
+    } else {
+      logger.warn('GIT publication aborted by user')
+    }
   }
