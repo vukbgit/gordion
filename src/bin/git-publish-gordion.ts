@@ -21,6 +21,7 @@ import { logger } from '../logger'
   async function selectFilesToPublish() {
     const result = await shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true)
     let files = result.stdout.trim().split('\n')
+    logger.warn(files)
     logger.warn(files.length)
     if(files.length == 0) {
       return false
