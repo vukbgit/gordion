@@ -163,6 +163,7 @@ import { logger } from '../logger'
         logger.error(bump.stderr)
         return false
       } else {
+        logger.info(bump.stdout)
         return true
       }
     } catch(e) {

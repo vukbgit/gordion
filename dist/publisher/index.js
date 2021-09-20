@@ -192,6 +192,8 @@ class Publisher {
 
         return false;
       } else {
+        _logger.logger.info(bump.stdout);
+
         return true;
       }
     } catch (e) {
