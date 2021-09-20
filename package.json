@@ -14,6 +14,7 @@
   },
   "bin": {
     "gordion-compile-gordion": "dist/bin/compile-gordion.js",
+    "gordion-compile-webapp": "dist/bin/compile-webapp.js",
     "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js",
     "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
     "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js",

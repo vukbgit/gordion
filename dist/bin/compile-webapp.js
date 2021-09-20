@@ -13,7 +13,6 @@ program.description('compiles Gordion package').option('-c, --clean', 'cleans di
     compileCommand = 'rimraf dist && ' + compileCommand;
   }
 
-  _shellCommander.shellCommander.exec(compileCommand, {
-    'cwd': 'node_modules/gordion'
+  _shellCommander.shellCommander.exec(compileCommand, {//'cwd': 'node_modules/gordion',
   });
 }).parse();

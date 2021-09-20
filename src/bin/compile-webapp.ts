@@ -16,7 +16,7 @@ program
     shellCommander.exec(
       compileCommand,
       {
-        'cwd': 'node_modules/gordion',
+        //'cwd': 'node_modules/gordion',
       }
     )
   })
