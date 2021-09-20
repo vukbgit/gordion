@@ -15,10 +15,10 @@ import { logger } from '../logger'
 }
 
 /**
- * GIT Publisher class
+ * Publisher class for GIT and NPM
  * @beta
  */
- export class GitPublisher {
+ export class Publisher {
 
   /**
    * The context 
@@ -40,7 +40,7 @@ import { logger } from '../logger'
     
   }
   
-  private async selectFilesToPublish() {
+  private async gitSelectFilesToPublish() {
     const result = await shellCommander.exec('cd node_modules/gordion && git status --porcelain', {}, true)
     let files: string[] = []
     result.stdout.trim().split('\n').forEach(line => {
@@ -74,7 +74,7 @@ import { logger } from '../logger'
     }
   }
 
-  private async askGitCommitMessage() {
+  private async gitAskCommitMessage() {
     const input: Record<string,any> = await prompt({
       type: 'input',
       name: 'message',
@@ -85,7 +85,7 @@ import { logger } from '../logger'
   }
 
   private async gitPublish(filesToPublish: [string],message: string) {
-    const commit = await shellCommander.exec('cd node_modules/gordion && git add ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push')
+    const commit = await shellCommander.exec('cd node_modules/gordion && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push')
     return commit
   }
   
@@ -93,9 +93,9 @@ import { logger } from '../logger'
     this.context = context
     const status = await this.gitStatus()
     if(status) {
-      const filesToPublish = await this.selectFilesToPublish()
+      const filesToPublish = await this.gitSelectFilesToPublish()
       if(filesToPublish !== false) {
-        const message = await this.askGitCommitMessage()
+        const message = await this.gitAskCommitMessage()
         const commit = await this.gitPublish(filesToPublish, message)
       }
     }
@@ -103,8 +103,8 @@ import { logger } from '../logger'
 }
 
 /**
- * The GIT Publisher instance
+ * The Publisher instance
  */
- const gitPublisher = new GitPublisher()
+ const publisher = new publisher()
 
- export { gitPublisher }
+ export { publisher }
