@@ -29,26 +29,35 @@ class ShellCommander {
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
+  //public async exec(command: string, options?: {}, silent: boolean=false): Promise<childPromise.PromiseResult<string>> {
   async exec(command, options, silent = false) {
     if (silent !== true) {
       _logger.logger.info('GORDION SHELL COMMANDER: ' + command);
     }
 
     try {
-      let result;
-      result = await childPromise.exec(command, options);
+      let result = await childPromise.exec(command, options);
 
       if (silent !== true) {
         _logger.logger.info(result.stdout);
       }
 
-      return result;
+      let outcome = {
+        success: true,
+        childProcess: result.childProcess,
+        stdout: result.stdout,
+        stderr: result.stderr
+      };
+      return outcome;
     } catch (err) {
-      let result;
+      let result = {
+        success: false,
+        stderr: err.stderr,
+        stdout: ''
+      };
 
-      _logger.logger.error(err);
+      _logger.logger.error(err.stderr);
 
-      result = err;
       return result;
     }
   }

@@ -6,6 +6,18 @@
 import * as childPromise from 'child-process-promise';
 import { logger } from '../logger'
 
+interface ExecSuccess extends childPromise.PromiseResult<string>
+{
+  success:boolean
+}
+
+interface ExecError
+{
+  success:boolean,
+  stdout: string,
+  stderr: string
+}
+
 /**
  * Shell Commander class
  * @beta
@@ -17,24 +29,33 @@ export class ShellCommander {
    * @param command - command string to be executed
    * @param options - object with options, see https://www.npmjs.com/package/commander#options 
    */
-   public async exec(command: string, options?: {}, silent: boolean=false): Promise<childPromise.PromiseResult<string>> {
+   //public async exec(command: string, options?: {}, silent: boolean=false): Promise<childPromise.PromiseResult<string>> {
+   public async exec(command: string, options?: {}, silent: boolean=false): Promise<ExecSuccess | ExecError> {
     if(silent !== true) {
       logger.info('GORDION SHELL COMMANDER: ' + command)
     }
     try {
-      let result: childPromise.PromiseResult<string>
-      result = await childPromise.exec(
+      let result:childPromise.PromiseResult<string> = await childPromise.exec(
         command,
         options
       )
       if(silent !== true) {
         logger.info(result.stdout)
       }
-      return result
+      let outcome:ExecSuccess = {
+        success: true,
+        childProcess: result.childProcess,
+        stdout: result.stdout,
+        stderr: result.stderr
+      }
+      return outcome
     } catch(err: any) {
-      let result: childPromise.PromiseResult<string>
-      logger.error(err)
-      result = err
+      let result:ExecError = {
+        success:false,
+        stderr: err.stderr,
+        stdout: ''
+      }
+      logger.error(err.stderr)
       return result
     }
    }

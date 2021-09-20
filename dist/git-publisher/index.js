@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gitPublisher = exports.GitPublisher = exports.contexts = void 0;
+exports.gitPublisher = exports.GitPublisher = void 0;
 
 var _commander = require("commander");
 
@@ -20,32 +20,37 @@ const program = new _commander.Command();
  * Possible contexts
  * @beta
  */
-let contexts;
+var contexts;
 /**
  * GIT Publisher class
  * @beta
  */
 
-exports.contexts = contexts;
-
 (function (contexts) {
   contexts[contexts["gordion"] = 0] = "gordion";
   contexts[contexts["webapp"] = 1] = "webapp";
-})(contexts || (exports.contexts = contexts = {}));
+})(contexts || (contexts = {}));
 
 class GitPublisher {
   /**
    * The context 
    */
-  context = null;
+  context = 'gordion';
+  contexts = {
+    'gordion': {
+      folder: 'node_modules/gordion'
+    },
+    'webapp': {
+      folder: '.'
+    }
+  };
 
   async gitStatus() {
-    const status = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git status');
-    return status;
+    const status = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status');
+    return status.success;
   }
 
   async selectFilesToPublish() {
-    //const result = await shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true)
     const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git status --porcelain', {}, true);
     let files = [];
     result.stdout.trim().split('\n').forEach(line => {
@@ -55,10 +60,7 @@ class GitPublisher {
         files.push(path);
       }
     });
-
-    _logger.logger.warn(files.length);
-
-    let choices = [...files]; //if(files.length == 0 || (files.length == 1 && files[0] == '')) {
+    let choices = [...files];
 
     if (files.length == 0) {
       return false;
@@ -104,14 +106,15 @@ class GitPublisher {
 
   async publishToGIT(context) {
     this.context = context;
-    await this.gitStatus();
-    const filesToPublish = await this.selectFilesToPublish();
+    const status = await this.gitStatus();
 
-    _logger.logger.warn(filesToPublish);
+    if (status) {
+      const filesToPublish = await this.selectFilesToPublish();
 
-    if (filesToPublish !== false) {
-      const message = await this.askGitCommitMessage();
-      const commit = await this.gitPublish(filesToPublish, message);
+      if (filesToPublish !== false) {
+        const message = await this.askGitCommitMessage();
+        const commit = await this.gitPublish(filesToPublish, message);
+      }
     }
   }
 

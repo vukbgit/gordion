@@ -3,7 +3,7 @@
  * Possible contexts
  * @beta
  */
-export declare enum contexts {
+declare enum contexts {
     gordion = 0,
     webapp = 1
 }
@@ -16,6 +16,7 @@ export declare class GitPublisher {
      * The context
      */
     private context;
+    private contexts;
     private gitStatus;
     private selectFilesToPublish;
     private askGitCommitMessage;

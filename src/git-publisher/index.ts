@@ -9,7 +9,7 @@ import { logger } from '../logger'
  * Possible contexts
  * @beta
  */
- export enum contexts {
+ enum contexts {
   gordion,
   webapp
 }
@@ -23,15 +23,24 @@ import { logger } from '../logger'
   /**
    * The context 
    */
-  private context: keyof typeof contexts | null = null
+  private context: keyof typeof contexts = 'gordion'
+
+  private contexts = {
+    'gordion': {
+      folder: 'node_modules/gordion'
+    },
+    'webapp': {
+      folder: '.'
+    }
+  }
 
   private async gitStatus() {
-    const status = await shellCommander.exec('cd node_modules/gordion && git status')
-    return status
+    const status = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status')
+    return status.success
+    
   }
   
   private async selectFilesToPublish() {
-    //const result = await shellCommander.exec('cd node_modules/gordion && git diff --name-only', {}, true)
     const result = await shellCommander.exec('cd node_modules/gordion && git status --porcelain', {}, true)
     let files: string[] = []
     result.stdout.trim().split('\n').forEach(line => {
@@ -40,9 +49,7 @@ import { logger } from '../logger'
         files.push(path)
       }
     })
-    logger.warn(files.length)
     let choices: string[] = [...files]
-    //if(files.length == 0 || (files.length == 1 && files[0] == '')) {
     if(files.length == 0) {
       return false
     } else {
@@ -84,12 +91,13 @@ import { logger } from '../logger'
   
   public async publishToGIT(context: keyof typeof contexts) {
     this.context = context
-    await this.gitStatus()
-    const filesToPublish = await this.selectFilesToPublish()
-    logger.warn(filesToPublish)
-    if(filesToPublish !== false) {
-      const message = await this.askGitCommitMessage()
-      const commit = await this.gitPublish(filesToPublish, message)
+    const status = await this.gitStatus()
+    if(status) {
+      const filesToPublish = await this.selectFilesToPublish()
+      if(filesToPublish !== false) {
+        const message = await this.askGitCommitMessage()
+        const commit = await this.gitPublish(filesToPublish, message)
+      }
     }
   }
 }
