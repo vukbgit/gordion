@@ -17,7 +17,9 @@
     "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js",
     "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
     "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js",
-    "gordion-symlink-gordion-executables": "dist/bin/symlink-gordion-executables.js"
+    "gordion-symlink-gordion-executables": "dist/bin/symlink-gordion-executables.js",
+    "gordion-gordion-git-publish-gordion": "dist/bin/gordion-git-publish-gordion.js",
+    "gordion-gordion-git-publish-webapp": "dist/bin/gordion-git-publish-webapp.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
