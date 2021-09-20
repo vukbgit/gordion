@@ -4,14 +4,6 @@
  * @beta
  */
 import * as childPromise from 'child-process-promise';
-interface ExecSuccess extends childPromise.PromiseResult<string> {
-    success: boolean;
-}
-interface ExecError {
-    success: boolean;
-    stdout: string;
-    stderr: string;
-}
 /**
  * Shell Commander class
  * @beta
@@ -21,8 +13,23 @@ export declare class ShellCommander {
      * Execs a shell command
      * @param command - command string to be executed
      * @param options - object with options, see https://www.npmjs.com/package/commander#options
+     * @param silent - boolean to output info
      */
     exec(command: string, options?: {}, silent?: boolean): Promise<ExecSuccess | ExecError>;
+}
+/**
+ * Success interface
+ */
+interface ExecSuccess extends childPromise.PromiseResult<string> {
+    success: boolean;
+}
+/**
+ * Error interface
+ */
+interface ExecError {
+    success: boolean;
+    stdout: string;
+    stderr: string;
 }
 declare const shellCommander: ShellCommander;
 export { shellCommander };

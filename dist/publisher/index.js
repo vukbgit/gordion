@@ -22,7 +22,7 @@ const program = new _commander.Command();
  */
 var contexts;
 /**
- * Publisher class for GIT and NPM
+ * Possible NPM versions
  * @beta
  */
 
@@ -31,11 +31,31 @@ var contexts;
   contexts[contexts["webapp"] = 1] = "webapp";
 })(contexts || (contexts = {}));
 
+var npmVersions;
+/**
+ * Publisher class for GIT and NPM
+ * @beta
+ */
+
+(function (npmVersions) {
+  npmVersions[npmVersions["major"] = 0] = "major";
+  npmVersions[npmVersions["minor"] = 1] = "minor";
+  npmVersions[npmVersions["patch"] = 2] = "patch";
+  npmVersions[npmVersions["premajor"] = 3] = "premajor";
+  npmVersions[npmVersions["preminor"] = 4] = "preminor";
+  npmVersions[npmVersions["prepatch"] = 5] = "prepatch";
+  npmVersions[npmVersions["prerelease"] = 6] = "prerelease";
+})(npmVersions || (npmVersions = {}));
+
 class Publisher {
   /**
-   * The context 
+   * The current context 
    */
   context = 'gordion';
+  /**
+   * Possible contexts
+   */
+
   contexts = {
     'gordion': {
       folder: 'node_modules/gordion'
@@ -44,14 +64,21 @@ class Publisher {
       folder: '.'
     }
   };
+  /**
+   * Gets git status
+   */
 
   async gitStatus() {
     const status = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status');
     return status.success;
   }
+  /**
+   * Lets choosing files to be published
+   */
+
 
   async gitSelectFilesToPublish() {
-    const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git status --porcelain', {}, true);
+    const result = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status --porcelain', {}, true);
     let files = [];
     result.stdout.trim().split('\n').forEach(line => {
       let path = line.split(' ').pop() || '';
@@ -88,6 +115,10 @@ class Publisher {
       return false;
     }
   }
+  /**
+   * Asks for GIT commit message
+   */
+
 
   async gitAskCommitMessage() {
     const input = await (0, _enquirer.prompt)({
@@ -98,11 +129,22 @@ class Publisher {
     });
     return input.message;
   }
+  /**
+   * Adds, commits and push to GIT repository
+   * @param filesToPublish - messages
+   * @param message
+   */
+
 
   async gitPublish(filesToPublish, message) {
-    const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push');
+    const commit = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push');
     return commit;
   }
+  /**
+   * Handles publication to a GIT repository
+   * @param context
+   */
+
 
   async publishToGIT(context) {
     this.context = context;
@@ -116,6 +158,64 @@ class Publisher {
         const commit = await this.gitPublish(filesToPublish, message);
       }
     }
+  }
+  /**
+   * Lets choosing and bumps NPM version
+   */
+
+
+  async npmVersion() {
+    //build choices
+    let choices = [];
+
+    for (let item in npmVersions) {
+      if (isNaN(Number(item))) {
+        choices.push(item);
+      }
+    }
+
+    try {
+      //choose semver field
+      const input = await (0, _enquirer.prompt)({
+        type: 'select',
+        name: 'version',
+        initial: 2,
+        //patch
+        message: 'Select semver field to bump (ESC to abort)',
+        choices: choices
+      });
+      let version = input.version;
+      const bump = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm version ' + version, {}, true);
+
+      if (bump.success === false) {
+        _logger.logger.error(bump.stderr);
+
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      _logger.logger.error(e);
+
+      return false;
+    }
+  }
+  /**
+   * Handles publication to NPM
+   * @param context
+   */
+
+
+  async publishToNPM(context) {
+    this.context = context;
+    const version = await this.npmVersion();
+    /*if(version) {
+      const filesToPublish = await this.gitSelectFilesToPublish()
+      if(filesToPublish !== false) {
+        const message = await this.gitAskCommitMessage()
+        const commit = await this.gitPublish(filesToPublish, message)
+      }
+    }*/
   }
 
 }

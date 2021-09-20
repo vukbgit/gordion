@@ -15,16 +15,34 @@ import { logger } from '../logger'
 }
 
 /**
+ * Possible NPM versions
+ * @beta
+ */
+ enum npmVersions {
+  major,
+  minor,
+  patch,
+  premajor,
+  preminor,
+  prepatch,
+  prerelease,
+  //'from-git'
+}
+
+/**
  * Publisher class for GIT and NPM
  * @beta
  */
  export class Publisher {
 
   /**
-   * The context 
+   * The current context 
    */
   private context: keyof typeof contexts = 'gordion'
 
+  /**
+   * Possible contexts
+   */
   private contexts = {
     'gordion': {
       folder: 'node_modules/gordion'
@@ -34,14 +52,20 @@ import { logger } from '../logger'
     }
   }
 
-  private async gitStatus() {
+  /**
+   * Gets git status
+   */
+   private async gitStatus() {
     const status = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status')
     return status.success
     
   }
   
-  private async gitSelectFilesToPublish() {
-    const result = await shellCommander.exec('cd node_modules/gordion && git status --porcelain', {}, true)
+  /**
+   * Lets choosing files to be published
+   */
+   private async gitSelectFilesToPublish() {
+    const result = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status --porcelain', {}, true)
     let files: string[] = []
     result.stdout.trim().split('\n').forEach(line => {
       let path = line.split(' ').pop() || ''
@@ -74,7 +98,10 @@ import { logger } from '../logger'
     }
   }
 
-  private async gitAskCommitMessage() {
+  /**
+   * Asks for GIT commit message
+   */
+   private async gitAskCommitMessage() {
     const input: Record<string,any> = await prompt({
       type: 'input',
       name: 'message',
@@ -84,12 +111,21 @@ import { logger } from '../logger'
     return input.message
   }
 
-  private async gitPublish(filesToPublish: [string],message: string) {
-    const commit = await shellCommander.exec('cd node_modules/gordion && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push')
+  /**
+   * Adds, commits and push to GIT repository
+   * @param filesToPublish - messages
+   * @param message
+   */
+   private async gitPublish(filesToPublish: [string],message: string) {
+    const commit = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push')
     return commit
   }
   
-  public async publishToGIT(context: keyof typeof contexts) {
+  /**
+   * Handles publication to a GIT repository
+   * @param context
+   */
+   public async publishToGIT(context: keyof typeof contexts) {
     this.context = context
     const status = await this.gitStatus()
     if(status) {
@@ -99,6 +135,56 @@ import { logger } from '../logger'
         const commit = await this.gitPublish(filesToPublish, message)
       }
     }
+  }
+
+  /**
+   * Lets choosing and bumps NPM version
+   */
+   private async npmVersion() {
+     //build choices
+    let choices: string[] = []
+    for (let item in npmVersions) {
+      if (isNaN(Number(item))) {
+        choices.push(item);
+      }
+    }
+    try {
+      //choose semver field
+      const input: Record<string,any> = await prompt({
+        type: 'select',
+        name: 'version',
+        initial: 2, //patch
+        message: 'Select semver field to bump (ESC to abort)',
+        choices: choices
+      })
+      let version = input.version
+      const bump = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm version ' + version, {}, true)
+      if(bump.success === false) {
+        logger.error(bump.stderr)
+        return false
+      } else {
+        return true
+      }
+    } catch(e) {
+      logger.error(e);
+      return false
+    }
+  }
+  
+  /**
+   * Handles publication to NPM
+   * @param context
+   */
+   public async publishToNPM(context: keyof typeof contexts) {
+    this.context = context
+    const version = await this.npmVersion()
+    /*if(version) {
+      const filesToPublish = await this.gitSelectFilesToPublish()
+      if(filesToPublish !== false) {
+        const message = await this.gitAskCommitMessage()
+        const commit = await this.gitPublish(filesToPublish, message)
+      }
+    }*/
   }
 }
 
