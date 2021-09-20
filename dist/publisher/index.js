@@ -184,7 +184,8 @@ class Publisher {
         message: 'Select semver field to bump (ESC to abort)',
         choices: choices
       });
-      let version = input.version;
+      let version = input.version; //bump version
+
       const bump = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm version ' + version, {}, true);
 
       if (bump.success === false) {
@@ -192,9 +193,20 @@ class Publisher {
 
         return false;
       } else {
-        _logger.logger.info(bump.stdout);
+        _logger.logger.info(bump.stdout); //publish
 
-        return true;
+
+        const publish = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm publish', {}, false);
+
+        if (publish.success === false) {
+          _logger.logger.error(publish.stderr);
+
+          return false;
+        } else {
+          //push new package.json to git
+          const publish = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git push', {}, false);
+          return true;
+        }
       }
     } catch (e) {
       _logger.logger.error(e);

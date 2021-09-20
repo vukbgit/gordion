@@ -158,13 +158,23 @@ import { logger } from '../logger'
         choices: choices
       })
       let version = input.version
+      //bump version
       const bump = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm version ' + version, {}, true)
       if(bump.success === false) {
         logger.error(bump.stderr)
         return false
       } else {
         logger.info(bump.stdout)
-        return true
+        //publish
+        const publish = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm publish', {}, false)
+        if(publish.success === false) {
+          logger.error(publish.stderr)
+          return false
+        } else {
+          //push new package.json to git
+          const publish = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git push', {}, false)
+          return true
+        }
       }
     } catch(e) {
       logger.error(e);
