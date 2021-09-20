@@ -20,6 +20,7 @@
     "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js",
     "gordion-symlink-gordion-executables": "dist/bin/symlink-gordion-executables.js",
     "gordion-publish-gordion-to-git": "dist/bin/publish-gordion-to-git.js",
+    "gordion-publish-gordion-to-npm": "dist/bin/publish-gordion-to-npm.js",
     "gordion-publish-webapp-to-git": "dist/bin/publish-webapp-to-git.js"
   },
   "devDependencies": {
