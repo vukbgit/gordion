@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gitPublisher = exports.GitPublisher = void 0;
+exports.publisher = exports.Publisher = void 0;
 
 var _commander = require("commander");
 
@@ -22,7 +22,7 @@ const program = new _commander.Command();
  */
 var contexts;
 /**
- * GIT Publisher class
+ * Publisher class for GIT and NPM
  * @beta
  */
 
@@ -31,7 +31,7 @@ var contexts;
   contexts[contexts["webapp"] = 1] = "webapp";
 })(contexts || (contexts = {}));
 
-class GitPublisher {
+class Publisher {
   /**
    * The context 
    */
@@ -50,7 +50,7 @@ class GitPublisher {
     return status.success;
   }
 
-  async selectFilesToPublish() {
+  async gitSelectFilesToPublish() {
     const result = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git status --porcelain', {}, true);
     let files = [];
     result.stdout.trim().split('\n').forEach(line => {
@@ -89,7 +89,7 @@ class GitPublisher {
     }
   }
 
-  async askGitCommitMessage() {
+  async gitAskCommitMessage() {
     const input = await (0, _enquirer.prompt)({
       type: 'input',
       name: 'message',
@@ -100,7 +100,7 @@ class GitPublisher {
   }
 
   async gitPublish(filesToPublish, message) {
-    const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push');
+    const commit = await _shellCommander.shellCommander.exec('cd node_modules/gordion && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push');
     return commit;
   }
 
@@ -109,10 +109,10 @@ class GitPublisher {
     const status = await this.gitStatus();
 
     if (status) {
-      const filesToPublish = await this.selectFilesToPublish();
+      const filesToPublish = await this.gitSelectFilesToPublish();
 
       if (filesToPublish !== false) {
-        const message = await this.askGitCommitMessage();
+        const message = await this.gitAskCommitMessage();
         const commit = await this.gitPublish(filesToPublish, message);
       }
     }
@@ -120,10 +120,10 @@ class GitPublisher {
 
 }
 /**
- * The GIT Publisher instance
+ * The Publisher instance
  */
 
 
-exports.GitPublisher = GitPublisher;
-const gitPublisher = new GitPublisher();
-exports.gitPublisher = gitPublisher;
+exports.Publisher = Publisher;
+const publisher = new Publisher();
+exports.publisher = publisher;

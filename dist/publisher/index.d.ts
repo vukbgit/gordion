@@ -26,5 +26,5 @@ export declare class Publisher {
 /**
  * The Publisher instance
  */
-declare const publisher: any;
+declare const publisher: Publisher;
 export { publisher };

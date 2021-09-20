@@ -105,6 +105,6 @@ import { logger } from '../logger'
 /**
  * The Publisher instance
  */
- const publisher = new publisher()
+ const publisher = new Publisher()
 
  export { publisher }
