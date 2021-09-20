@@ -1,6 +1,6 @@
 {
   "name": "gordion",
-  "version": "0.1.28",
+  "version": "0.1.27",
   "author": "vuk",
   "description": "A Node.js typescript web app engine",
   "license": "ISC",
