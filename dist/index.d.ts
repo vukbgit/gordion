@@ -1,11 +1,4 @@
 /**
- * A TypeScript web app engine
- * @remarks
- * This top level module re-exports inner modules
- * @packageDocumentation
- * @beta
- */
-/**
  * Re-exports an instance of the {@link logger} class.
  * @public
  */
@@ -30,3 +23,8 @@ export { templater } from "./templater";
  * @public
  */
 export { shellCommander } from "./shell-commander";
+/**
+ * Exports the bootstrap function to be called by webapp
+ * @public
+ */
+export declare function bootstrap(): Promise<void>;

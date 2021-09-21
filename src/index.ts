@@ -8,6 +8,11 @@
  * @beta
  */
 
+ import { logger } from "./logger"
+ import { dIContainer } from "./di-container"
+ import { router } from "./router"
+ import http from 'http';
+
 /**
  * Re-exports an instance of the {@link logger} class.
  * @public
@@ -37,3 +42,29 @@ export { templater } from "./templater";
  * @public
  */
 export { shellCommander } from "./shell-commander";
+
+/**
+ * Exports the bootstrap function to be called by webapp
+ * @public
+ */
+export async function bootstrap() {
+  await dIContainer.registerServices()
+  
+  await router.registerRoutes()
+
+  const port: number = Number(process.env.PORT);
+
+  http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
+    router.resolveRoute(req, res)
+  })
+  //listen
+  .listen(port)
+  //start-up message
+  .on('listening', () => {
+    console.log(`Server running on port ${port}`);
+  })
+  //catch error
+  .on('error', (error) => {
+    console.log(`Error!`, error);
+  })
+}
