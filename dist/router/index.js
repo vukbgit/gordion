@@ -69,15 +69,22 @@ class Router {
 
   async registerRoutes() {
     //loop files
+    let routesNumber = 0;
+
     for await (const routesFile of this.searchRoutes()) {
       //loop routes
+      _logger.logger.debug(`routes registered from file ${routesFile.path}`);
+
       for (const route of routesFile.routes) {
         //validate route
         if (this.validateRoute(route)) {
           //register route
           this.registerRoute(route);
 
-          _logger.logger.debug(`route registered from file ${routesFile.path}`, route);
+          _logger.logger.debug(route); //increment routes number
+
+
+          routesNumber++;
         } else {
           //invalid route
           _logger.logger.error(`invalid route in file ${routesFile.path}`, route);
@@ -85,7 +92,11 @@ class Router {
       }
     }
 
-    _logger.logger.info('all routes registered');
+    if (routesNumber === 0) {
+      _logger.logger.error('no routes registered');
+    } else {
+      _logger.logger.info(routesNumber, ' routes registered');
+    }
   }
   /**
    * Validates a route

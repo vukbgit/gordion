@@ -64,21 +64,29 @@
     */
    public async registerRoutes() {
      //loop files
+     let routesNumber: number = 0
      for await (const routesFile of this.searchRoutes()) {
        //loop routes
+       logger.debug(`routes registered from file ${routesFile.path}`);
        for(const route of routesFile.routes) {
          //validate route
          if(this.validateRoute(route)) {
            //register route
            this.registerRoute(route)
-           logger.debug(`route registered from file ${routesFile.path}`, route);
+           logger.debug(route);
+           //increment routes number
+           routesNumber++
          } else {
            //invalid route
            logger.error(`invalid route in file ${routesFile.path}`, route);
          }
        }
      }
-     logger.info('all routes registered')
+     if(routesNumber === 0) {
+       logger.error('no routes registered')
+     } else {
+       logger.info(routesNumber, ' routes registered')
+     }
    }
  
    /**
