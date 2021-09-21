@@ -46,6 +46,7 @@
     "migrate": "^1.7.0",
     "commander": "^8.2.0",
     "child-process-promise": "^2.2.1",
-    "@types/child-process-promise": "^2.2.2"
+    "@types/child-process-promise": "^2.2.2",
+    "camel-case": "^4.1.2"
   }
 }

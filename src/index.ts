@@ -61,10 +61,10 @@ export async function bootstrap() {
   .listen(port)
   //start-up message
   .on('listening', () => {
-    console.log(`Server running on port ${port}`);
+    logger.info(`Server running on port ${port}`);
   })
   //catch error
   .on('error', (error) => {
-    console.log(`Error!`, error);
+    logger.error(error);
   })
 }

@@ -4,6 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.bootstrap = bootstrap;
+Object.defineProperty(exports, "logger", {
+  enumerable: true,
+  get: function () {
+    return _logger.logger;
+  }
+});
 Object.defineProperty(exports, "dIContainer", {
   enumerable: true,
   get: function () {
@@ -14,12 +20,6 @@ Object.defineProperty(exports, "router", {
   enumerable: true,
   get: function () {
     return _router.router;
-  }
-});
-Object.defineProperty(exports, "logger", {
-  enumerable: true,
-  get: function () {
-    return _logger.logger;
   }
 });
 Object.defineProperty(exports, "templater", {
@@ -35,13 +35,13 @@ Object.defineProperty(exports, "shellCommander", {
   }
 });
 
+var _logger = require("./logger");
+
 var _diContainer = require("./di-container");
 
 var _router = require("./router");
 
 var _http = _interopRequireDefault(require("http"));
-
-var _logger = require("./logger");
 
 var _templater = require("./templater");
 
@@ -98,9 +98,9 @@ async function bootstrap() {
   }) //listen
   .listen(port) //start-up message
   .on('listening', () => {
-    console.log(`Server running on port ${port}`);
+    _logger.logger.info(`Server running on port ${port}`);
   }) //catch error
   .on('error', error => {
-    console.log(`Error!`, error);
+    _logger.logger.error(error);
   });
 }

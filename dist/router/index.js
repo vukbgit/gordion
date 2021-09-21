@@ -78,11 +78,10 @@ class Router {
       for (const route of routesFile.routes) {
         //validate route
         if (this.validateRoute(route)) {
-          //register route
-          this.registerRoute(route);
+          _logger.logger.debug(route); //register route
 
-          _logger.logger.debug(route); //increment routes number
 
+          this.registerRoute(route); //increment routes number
 
           routesNumber++;
         } else {

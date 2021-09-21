@@ -71,9 +71,9 @@
        for(const route of routesFile.routes) {
          //validate route
          if(this.validateRoute(route)) {
+           logger.debug(route);
            //register route
            this.registerRoute(route)
-           logger.debug(route);
            //increment routes number
            routesNumber++
          } else {
@@ -108,7 +108,7 @@
     * @param route - a Route object
     */
    private registerRoute(route: Route) {
-     this.router.on(route.methods, route.route, dIContainer.getServiceMethod(route.handler, route.action))
+    this.router.on(route.methods, route.route, dIContainer.getServiceMethod(route.handler, route.action))
    }
  
    /**

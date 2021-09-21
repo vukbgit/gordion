@@ -6,6 +6,7 @@
  import FileHound from 'filehound';
  import Bottle from "bottlejs"
  import { logger } from '../logger'
+ import { stringer } from "../stringer"
  
  /**
   * The DI Container class
@@ -86,7 +87,8 @@
     * @returns the service method return
     */
     public getServiceMethod(label: string, method: string) {
-     return this.diContainer.container[label][method]
+      method = stringer.camelCase(method)
+      return this.diContainer.container[label][method]
    }
  }
  
