@@ -44,12 +44,13 @@ class Templater {
   /**
    * Renders a template
    * @param templatePath - path to template from templates root folder
+   * @param context - ash with context variables
    * @returns template content
    */
 
 
-  renderTemplate(templatePath) {
-    return this.templateEngine.render(templatePath);
+  renderTemplate(templatePath, context) {
+    return this.templateEngine.render(templatePath, context);
   }
 
 }

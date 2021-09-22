@@ -37,10 +37,11 @@ export class Templater {
   /**
    * Renders a template
    * @param templatePath - path to template from templates root folder
+   * @param context - ash with context variables
    * @returns template content
    */
-  public renderTemplate(templatePath: string): string {
-    return this.templateEngine.render(templatePath)
+  public renderTemplate(templatePath: string, context?: object): string {
+    return this.templateEngine.render(templatePath, context)
   }
 }
 

@@ -19,9 +19,10 @@ export declare class Templater {
     /**
      * Renders a template
      * @param templatePath - path to template from templates root folder
+     * @param context - ash with context variables
      * @returns template content
      */
-    renderTemplate(templatePath: string): string;
+    renderTemplate(templatePath: string, context?: object): string;
 }
 /**
  * The Templater instance
