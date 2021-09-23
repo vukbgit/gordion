@@ -8,6 +8,7 @@
  import FileHound from 'filehound';
  import FindMyWay from "find-my-way";
  import { dIContainer } from "../di-container"
+ import { stringer } from "../stringer"
  
  /**
   * The Router class
@@ -104,11 +105,28 @@
    }
  
    /**
+    * Turns action to a service method name
+    * @param asction
+    * @returns the method name
+    */
+    public getServiceMethodName(action: string) {
+      return stringer.camelCase(action)
+    }
+
+   /**
     * Registers a route
     * @param route - a Route object
     */
    private registerRoute(route: Route) {
-    this.router.on(route.methods, route.route, dIContainer.getServiceMethod(route.handler, route.action))
+    this.router.on(
+      route.methods,
+      route.route,
+      (req: http.IncomingMessage, res: http.ServerResponse, params: { [key: string]: any }) => {
+        const service = dIContainer.getService(route.handler)
+        const methodName = this.getServiceMethodName(route.action)
+        service[methodName](req, res, params)
+      }
+    )
    }
  
    /**

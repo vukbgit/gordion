@@ -13,6 +13,8 @@ var _findMyWay = _interopRequireDefault(require("find-my-way"));
 
 var _diContainer = require("../di-container");
 
+var _stringer = require("../stringer");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -108,13 +110,28 @@ class Router {
     return "methods" in route && "route" in route && "handler" in route && "action" in route;
   }
   /**
+   * Turns action to a service method name
+   * @param asction
+   * @returns the method name
+   */
+
+
+  getServiceMethodName(action) {
+    return _stringer.stringer.camelCase(action);
+  }
+  /**
    * Registers a route
    * @param route - a Route object
    */
 
 
   registerRoute(route) {
-    this.router.on(route.methods, route.route, _diContainer.dIContainer.getServiceMethod(route.handler, route.action));
+    this.router.on(route.methods, route.route, (req, res, params) => {
+      const service = _diContainer.dIContainer.getService(route.handler);
+
+      const methodName = this.getServiceMethodName(route.action);
+      service[methodName](req, res, params);
+    });
   }
   /**
    * Resolves a route

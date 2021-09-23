@@ -77,18 +77,9 @@
     * @returns the service instance
     */
    public getService(label: string) {
-     return this.diContainer.container[label]
-   }
- 
-   /**
-    * Gets a service method
-    * @param label service label
-    * @param method service method name
-    * @returns the service method return
-    */
-    public getServiceMethod(label: string, method: string) {
-      method = stringer.camelCase(method)
-      return this.diContainer.container[label][method]
+     //return this.diContainer.container[label]
+     const service = this.diContainer.container[label]
+     return service
    }
  }
  

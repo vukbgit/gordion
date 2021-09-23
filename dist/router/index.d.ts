@@ -37,6 +37,12 @@ export declare class Router {
      */
     private validateRoute;
     /**
+     * Turns action to a service method name
+     * @param asction
+     * @returns the method name
+     */
+    getServiceMethodName(action: string): string;
+    /**
      * Registers a route
      * @param route - a Route object
      */

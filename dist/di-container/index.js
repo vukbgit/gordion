@@ -88,7 +88,9 @@ class DIContainer {
 
 
   getService(label) {
-    return this.diContainer.container[label];
+    //return this.diContainer.container[label]
+    const service = this.diContainer.container[label];
+    return service;
   }
   /**
    * Gets a service method
