@@ -35,13 +35,6 @@ export declare class DIContainer {
      * @returns the service instance
      */
     getService(label: string): any;
-    /**
-     * Gets a service method
-     * @param label service label
-     * @param method service method name
-     * @returns the service method return
-     */
-    getServiceMethod(label: string, method: string): any;
 }
 /**
  * The DI Container instance

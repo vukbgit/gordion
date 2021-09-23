@@ -21,7 +21,8 @@
     "gordion-symlink-gordion-executables": "dist/bin/symlink-gordion-executables.js",
     "gordion-publish-gordion-to-git": "dist/bin/publish-gordion-to-git.js",
     "gordion-publish-gordion-to-npm": "dist/bin/publish-gordion-to-npm.js",
-    "gordion-publish-webapp-to-git": "dist/bin/publish-webapp-to-git.js"
+    "gordion-publish-webapp-to-git": "dist/bin/publish-webapp-to-git.js",
+    "gordion-init-webapp-static": "dist/bin/init-webapp-static.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
@@ -35,7 +36,8 @@
     "chalk": "^2.4.2",
     "nodemon": "^2.0.7",
     "rimraf": "^3.0.2",
-    "enquirer": "^2.3.6"
+    "enquirer": "^2.3.6",
+    "create-pwa": "^2.3.1"
   },
   "dependencies": {
     "bottlejs": "^2.0.0",
@@ -47,6 +49,8 @@
     "commander": "^8.2.0",
     "child-process-promise": "^2.2.1",
     "@types/child-process-promise": "^2.2.2",
-    "camel-case": "^4.1.2"
+    "camel-case": "^4.1.2",
+    "sprintf-js": "^1.1.2",
+    "@types/sprintf-js": "^1.1.2"
   }
 }
