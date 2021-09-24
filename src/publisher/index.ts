@@ -1,4 +1,9 @@
-#!/usr/bin/env node
+/**
+ * The publisher module provides publication over different channels (GIT and NPM so far)
+ * @module
+ * @beta
+ */
+import { sprintf } from 'sprintf-js';
 import { Command } from 'commander';
 const program = new Command();
 import { prompt } from 'enquirer';
@@ -52,6 +57,76 @@ import { logger } from '../logger'
     }
   }
 
+  /**
+   * Inits git repository
+   */
+   private async gitInit() {
+     try {
+       //confirm
+       let input: Record<string,any> = await prompt({
+         type: 'confirm',
+         name: 'init',
+         initial: true,
+         message: 'Init repository and overwrite current webapp files (ESC to abort)?'
+       })
+       if(input.init) {
+          //ask for username
+          input = await prompt({
+            type: 'input',
+            name: 'username',
+            initial: '',
+            message: 'GIT username',
+            required: true
+          })
+          const username = input.username
+          //ask for email
+          input = await prompt({
+            type: 'input',
+            name: 'email',
+            initial: '',
+            message: 'GIT email',
+            required: true
+          })
+          const email = input.email
+          //ask for repository URL
+          input = await prompt({
+            type: 'input',
+            name: 'repoUrl',
+            initial: '',
+            message: 'GIT repository url',
+            required: true
+          })
+          const repoUrl = input.repoUrl
+          //one more confirm
+          input = await prompt({
+            type: 'confirm',
+            name: 'init',
+            initial: true,
+            message: sprintf(
+              'Init repository with the following details (ESC to abort)?\nusername: %s\nemail: %s\nrepo URL: %s\n',
+              username,
+              email,
+              repoUrl
+            )
+          })
+          if(input.init) {
+            const command = `
+git init -b main
+git config user.name "${username}"
+git config user.email "${email}"
+git remote add origin ${repoUrl}
+git fetch origin
+git checkout -b main origin/main -f
+            `
+            const init = await shellCommander.exec(command)
+            logger.debug(init)
+          }
+       }
+     } catch(err) {
+       logger.error(err)
+     }
+  }
+  
   /**
    * Gets git status
    */
@@ -122,6 +197,15 @@ import { logger } from '../logger'
   }
   
   /**
+   * Inits GIT repository
+   * @param context
+   */
+   public async initGITRepository(context: keyof typeof contexts) {
+    this.context = context
+    const status = await this.gitInit()
+  }
+  
+  /**
    * Handles publication to a GIT repository
    * @param context
    */
@@ -189,13 +273,6 @@ import { logger } from '../logger'
    public async publishToNPM(context: keyof typeof contexts) {
     this.context = context
     const version = await this.npmVersion()
-    /*if(version) {
-      const filesToPublish = await this.gitSelectFilesToPublish()
-      if(filesToPublish !== false) {
-        const message = await this.gitAskCommitMessage()
-        const commit = await this.gitPublish(filesToPublish, message)
-      }
-    }*/
   }
 }
 

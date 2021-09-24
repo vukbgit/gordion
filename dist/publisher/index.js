@@ -1,10 +1,11 @@
-#!/usr/bin/env node
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.publisher = exports.Publisher = void 0;
+
+var _sprintfJs = require("sprintf-js");
 
 var _commander = require("commander");
 
@@ -14,6 +15,11 @@ var _shellCommander = require("../shell-commander");
 
 var _logger = require("../logger");
 
+/**
+ * The publisher module provides publication over different channels (GIT and NPM so far)
+ * @module
+ * @beta
+ */
 const program = new _commander.Command();
 
 /**
@@ -65,8 +71,77 @@ class Publisher {
     }
   };
   /**
+   * Inits git repository
+   */
+
+  async gitInit() {
+    try {
+      //confirm
+      let input = await (0, _enquirer.prompt)({
+        type: 'confirm',
+        name: 'init',
+        initial: true,
+        message: 'Init repository and overwrite current webapp files (ESC to abort)?'
+      });
+
+      if (input.init) {
+        //ask for username
+        input = await (0, _enquirer.prompt)({
+          type: 'input',
+          name: 'username',
+          initial: '',
+          message: 'GIT username',
+          required: true
+        });
+        const username = input.username; //ask for email
+
+        input = await (0, _enquirer.prompt)({
+          type: 'input',
+          name: 'email',
+          initial: '',
+          message: 'GIT email',
+          required: true
+        });
+        const email = input.email; //ask for repository URL
+
+        input = await (0, _enquirer.prompt)({
+          type: 'input',
+          name: 'repoUrl',
+          initial: '',
+          message: 'GIT repository url',
+          required: true
+        });
+        const repoUrl = input.repoUrl; //one more confirm
+
+        input = await (0, _enquirer.prompt)({
+          type: 'confirm',
+          name: 'init',
+          initial: true,
+          message: (0, _sprintfJs.sprintf)('Init repository with the following details (ESC to abort)?\nusername: %s\nemail: %s\nrepo URL: %s\n', username, email, repoUrl)
+        });
+
+        if (input.init) {
+          const command = `
+git init -b main
+git config user.name "${username}"
+git config user.email "${email}"
+git remote add origin ${repoUrl}
+git fetch origin
+git checkout -b main origin/main -f
+            `;
+          const init = await _shellCommander.shellCommander.exec(command);
+
+          _logger.logger.debug(init);
+        }
+      }
+    } catch (err) {
+      _logger.logger.error(err);
+    }
+  }
+  /**
    * Gets git status
    */
+
 
   async gitStatus() {
     const status = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git status');
@@ -139,6 +214,16 @@ class Publisher {
   async gitPublish(filesToPublish, message) {
     const commit = await _shellCommander.shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git add -A ' + filesToPublish.join(' ') + ' && git commit -m "' + message + '" && git push');
     return commit;
+  }
+  /**
+   * Inits GIT repository
+   * @param context
+   */
+
+
+  async initGITRepository(context) {
+    this.context = context;
+    const status = await this.gitInit();
   }
   /**
    * Handles publication to a GIT repository
@@ -223,13 +308,6 @@ class Publisher {
   async publishToNPM(context) {
     this.context = context;
     const version = await this.npmVersion();
-    /*if(version) {
-      const filesToPublish = await this.gitSelectFilesToPublish()
-      if(filesToPublish !== false) {
-        const message = await this.gitAskCommitMessage()
-        const commit = await this.gitPublish(filesToPublish, message)
-      }
-    }*/
   }
 
 }

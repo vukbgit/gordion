@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Possible contexts
  * @beta
@@ -21,6 +20,10 @@ export declare class Publisher {
      */
     private contexts;
     /**
+     * Inits git repository
+     */
+    private gitInit;
+    /**
      * Gets git status
      */
     private gitStatus;
@@ -38,6 +41,11 @@ export declare class Publisher {
      * @param message
      */
     private gitPublish;
+    /**
+     * Inits GIT repository
+     * @param context
+     */
+    initGITRepository(context: keyof typeof contexts): Promise<void>;
     /**
      * Handles publication to a GIT repository
      * @param context
