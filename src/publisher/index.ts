@@ -243,21 +243,44 @@ git checkout -b main origin/main -f
       })
       let version = input.version
       //bump version
-      const bump = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm version ' + version, {}, true)
+      const bump = await shellCommander.exec(
+        sprintf('cd %s && npm version %s', this.contexts[this.context].folder, version),
+        {},
+        false
+      )
       if(bump.success === false) {
         logger.error(bump.stderr)
         return false
       } else {
         logger.info(bump.stdout)
         //publish
-        const publish = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && npm publish', {}, false)
+        const publish = await shellCommander.exec(
+          sprintf('cd %s && npm publish', this.contexts[this.context].folder),
+          {},
+          false
+        )
         if(publish.success === false) {
           logger.error(publish.stderr)
           return false
         } else {
           //push new package.json to git
-          const publish = await shellCommander.exec('cd ' + this.contexts[this.context].folder + ' && git push', {}, false)
-          return true
+          const publish = await shellCommander.exec(
+            sprintf('cd %s && git push', this.contexts[this.context].folder),
+            {},
+            false
+          )
+          if(publish.success === false) {
+            logger.error(publish.stderr)
+            return false
+          } else {
+            //update gordion version into webapp package.json without reinstalling
+            const publish = await shellCommander.exec(
+              'npm i gordion --package-lock-only',
+              {},
+              false
+            )
+            return true
+          }
         }
       }
     } catch(e) {
