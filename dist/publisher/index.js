@@ -122,6 +122,7 @@ class Publisher {
 
         if (input.init) {
           const command = `
+cd ${this.contexts[this.context].folder}
 git init -b main
 git config user.name "${username}"
 git config user.email "${email}"
