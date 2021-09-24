@@ -120,7 +120,6 @@ git fetch origin
 git checkout -b main origin/main -f
             `
             const init = await shellCommander.exec(command)
-            logger.debug(init)
           }
        }
      } catch(err) {

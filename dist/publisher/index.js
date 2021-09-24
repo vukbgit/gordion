@@ -131,8 +131,6 @@ git fetch origin
 git checkout -b main origin/main -f
             `;
           const init = await _shellCommander.shellCommander.exec(command);
-
-          _logger.logger.debug(init);
         }
       }
     } catch (err) {
