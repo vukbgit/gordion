@@ -13,16 +13,18 @@
     "create-migration": "npx migrate create -t src/migrater/templates/standard.js"
   },
   "bin": {
+    "gordion-init-gordion-repository": "dist/bin/init-gordion-repository.js",
+    "gordion-init-webapp-repository": "dist/bin/init-webapp-repository.js",
     "gordion-compile-gordion": "dist/bin/compile-gordion.js",
     "gordion-compile-webapp": "dist/bin/compile-webapp.js",
     "gordion-install-gordion-dev-dependencies": "dist/bin/install-gordion-dev-dependencies.js",
-    "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
-    "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js",
     "gordion-symlink-gordion-executables": "dist/bin/symlink-gordion-executables.js",
     "gordion-publish-gordion-to-git": "dist/bin/publish-gordion-to-git.js",
     "gordion-publish-gordion-to-npm": "dist/bin/publish-gordion-to-npm.js",
     "gordion-publish-webapp-to-git": "dist/bin/publish-webapp-to-git.js",
-    "gordion-init-webapp-static": "dist/bin/init-webapp-static.js"
+    "gordion-init-webapp-static": "dist/bin/init-webapp-static.js",
+    "gordion-create-gordion-migration": "dist/bin/create-gordion-migration.js",
+    "gordion-create-webapp-migration": "dist/bin/create-webapp-migration.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
