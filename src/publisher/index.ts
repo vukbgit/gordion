@@ -67,7 +67,7 @@ import { logger } from '../logger'
          type: 'confirm',
          name: 'init',
          initial: true,
-         message: 'Init repository and overwrite current webapp files (ESC to abort)?'
+         message: sprintf('Init repository and overwrite current %s files (ESC to abort)?', this.context)
        })
        if(input.init) {
           //ask for username

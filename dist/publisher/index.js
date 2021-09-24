@@ -81,7 +81,7 @@ class Publisher {
         type: 'confirm',
         name: 'init',
         initial: true,
-        message: 'Init repository and overwrite current webapp files (ESC to abort)?'
+        message: (0, _sprintfJs.sprintf)('Init repository and overwrite current %s files (ESC to abort)?', this.context)
       });
 
       if (input.init) {
