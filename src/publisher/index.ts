@@ -275,11 +275,22 @@
              return false
            } else {
              //update gordion version into webapp package.json without reinstalling
-             const publish = await shellCommander.exec(
-               sprintf('npm i gordion@%s --package-lock-only', version),
-               {},
-               false
-             )
+             let publishedToRegistry:boolean = false
+             while(publishedToRegistry == false) {
+               try {
+                 let publishToRegistry = await shellCommander.exec(
+                   sprintf('npm i gordion@%s --package-lock-only', version),
+                   {},
+                   false
+                 )
+                 publishedToRegistry = publishToRegistry.success
+               } catch(err) {
+                 logger.error('not yet published...');
+                 publishedToRegistry = false
+               }
+
+             }
+
              return true
            }
          }

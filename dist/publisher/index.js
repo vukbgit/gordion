@@ -298,7 +298,19 @@ class Publisher {
             return false;
           } else {
             //update gordion version into webapp package.json without reinstalling
-            const publish = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('npm i gordion@%s --package-lock-only', version), {}, false);
+            let publishedToRegistry = false;
+
+            while (publishedToRegistry == false) {
+              try {
+                let publishToRegistry = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('npm i gordion@%s --package-lock-only', version), {}, false);
+                publishedToRegistry = publishToRegistry.success;
+              } catch (err) {
+                _logger.logger.error('not yet published...');
+
+                publishedToRegistry = false;
+              }
+            }
+
             return true;
           }
         }
