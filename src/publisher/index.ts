@@ -276,7 +276,6 @@
              //update gordion version into webapp package.json without reinstalling
              let publishedToRegistry:boolean = false
              while(publishedToRegistry == false) {
-               //try {
                  let publishToRegistry = await shellCommander.exec(
                    sprintf('npm cache clean --force && npm i gordion@%s --package-lock-only', version),
                    {},
@@ -288,10 +287,6 @@
                  } else {
                    logger.info(sprintf('Gordion published to NPM registry and updated to %s version into webapp configuration', version))
                  }
-               /*} catch(err) {
-                 publishedToRegistry = false
-               }*/
-
              }
 
              return true

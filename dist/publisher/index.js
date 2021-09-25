@@ -298,7 +298,6 @@ class Publisher {
             let publishedToRegistry = false;
 
             while (publishedToRegistry == false) {
-              //try {
               let publishToRegistry = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('npm cache clean --force && npm i gordion@%s --package-lock-only', version), {}, true);
               publishedToRegistry = publishToRegistry.success;
 
@@ -307,10 +306,6 @@ class Publisher {
               } else {
                 _logger.logger.info((0, _sprintfJs.sprintf)('Gordion published to NPM registry and updated to %s version into webapp configuration', version));
               }
-              /*} catch(err) {
-                publishedToRegistry = false
-              }*/
-
             }
 
             return true;
