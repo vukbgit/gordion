@@ -286,7 +286,7 @@
                  if(publishedToRegistry === false) {
                    logger.warn('waiting for publication...');
                  } else {
-                   logger.info(sprintf('Gordion published to NPM registry and updated to %d version into webapp configuration', version))
+                   logger.info(sprintf('Gordion published to NPM registry and updated to %s version into webapp configuration', version))
                  }
                /*} catch(err) {
                  publishedToRegistry = false

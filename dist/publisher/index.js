@@ -305,7 +305,7 @@ class Publisher {
               if (publishedToRegistry === false) {
                 _logger.logger.warn('waiting for publication...');
               } else {
-                _logger.logger.info((0, _sprintfJs.sprintf)('Gordion published to NPM registry and updated to %d version into webapp configuration', version));
+                _logger.logger.info((0, _sprintfJs.sprintf)('Gordion published to NPM registry and updated to %s version into webapp configuration', version));
               }
               /*} catch(err) {
                 publishedToRegistry = false
