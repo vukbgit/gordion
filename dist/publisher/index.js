@@ -122,14 +122,14 @@ class Publisher {
 
         if (input.init) {
           const command = `
-cd ${this.contexts[this.context].folder}
-git init -b main
-git config user.name "${username}"
-git config user.email "${email}"
-git remote add origin ${repoUrl}
-git fetch origin
-git checkout -b main origin/main -f
-            `;
+ cd ${this.contexts[this.context].folder}
+ git init -b main
+ git config user.name "${username}"
+ git config user.email "${email}"
+ git remote add origin ${repoUrl}
+ git fetch origin
+ git checkout -b main origin/main -f
+             `;
           const init = await _shellCommander.shellCommander.exec(command);
         }
       }
@@ -277,7 +277,7 @@ git checkout -b main origin/main -f
 
         return false;
       } else {
-        const version = bump.stdout.replace(/^v/, '');
+        const version = bump.stdout.replace(/^v/, '').trim();
 
         _logger.logger.info(version); //publish
 
