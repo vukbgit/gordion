@@ -253,7 +253,6 @@
          return false
        } else {
          const version = bump.stdout.replace(/^v/,'').trim()
-         logger.info(version)
          //publish
          const publish = await shellCommander.exec(
            sprintf('cd %s && npm publish', this.contexts[this.context].folder),
@@ -285,9 +284,9 @@
                  )
                  publishedToRegistry = publishToRegistry.success
                  if(publishedToRegistry === false) {
-                   logger.warn('not yet published...');
+                   logger.warn('waiting for publication...');
                  } else {
-                   logger.info('Gordion published to NPM registry and updated into webapp configuration')
+                   logger.info(sprintf('Gordion published to NPM registry and updated to %d version into webapp configuration', version))
                  }
                /*} catch(err) {
                  publishedToRegistry = false

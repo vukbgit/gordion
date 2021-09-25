@@ -277,10 +277,7 @@ class Publisher {
 
         return false;
       } else {
-        const version = bump.stdout.replace(/^v/, '').trim();
-
-        _logger.logger.info(version); //publish
-
+        const version = bump.stdout.replace(/^v/, '').trim(); //publish
 
         const publish = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('cd %s && npm publish', this.contexts[this.context].folder), {}, false);
 
@@ -306,9 +303,9 @@ class Publisher {
               publishedToRegistry = publishToRegistry.success;
 
               if (publishedToRegistry === false) {
-                _logger.logger.warn('not yet published...');
+                _logger.logger.warn('waiting for publication...');
               } else {
-                _logger.logger.info('Gordion published to NPM registry and updated into webapp configuration');
+                _logger.logger.info((0, _sprintfJs.sprintf)('Gordion published to NPM registry and updated to %d version into webapp configuration', version));
               }
               /*} catch(err) {
                 publishedToRegistry = false
