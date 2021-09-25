@@ -279,7 +279,7 @@
              while(publishedToRegistry == false) {
                try {
                  let publishToRegistry = await shellCommander.exec(
-                   sprintf('npm i gordion@%s --package-lock-only', version),
+                   sprintf('npm cache clean --force && npm i gordion@%s --package-lock-only', version),
                    {},
                    false
                  )
