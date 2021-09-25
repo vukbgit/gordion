@@ -301,14 +301,19 @@ class Publisher {
             let publishedToRegistry = false;
 
             while (publishedToRegistry == false) {
-              try {
-                let publishToRegistry = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('npm cache clean --force && npm i gordion@%s --package-lock-only', version), {}, false);
-                publishedToRegistry = publishToRegistry.success;
-              } catch (err) {
-                _logger.logger.error('not yet published...');
+              //try {
+              let publishToRegistry = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('npm cache clean --force && npm i gordion@%s --package-lock-only', version), {}, true);
+              publishedToRegistry = publishToRegistry.success;
 
-                publishedToRegistry = false;
+              if (publishedToRegistry === false) {
+                _logger.logger.warn('not yet published...');
+              } else {
+                _logger.logger.info('Gordion published to NPM registry and updated into webapp configuration');
               }
+              /*} catch(err) {
+                publishedToRegistry = false
+              }*/
+
             }
 
             return true;
