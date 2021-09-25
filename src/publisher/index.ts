@@ -252,7 +252,9 @@ git checkout -b main origin/main -f
         logger.error(bump.stderr)
         return false
       } else {
-        logger.info(bump.stdout)
+        const version = bump.stdout.replace(/^v/,'')
+        logger.info(version)
+
         //publish
         const publish = await shellCommander.exec(
           sprintf('cd %s && npm publish', this.contexts[this.context].folder),
@@ -275,7 +277,7 @@ git checkout -b main origin/main -f
           } else {
             //update gordion version into webapp package.json without reinstalling
             const publish = await shellCommander.exec(
-              'npm i gordion --package-lock-only',
+              sprintf('npm i gordion@%s --package-lock-only', version),
               {},
               false
             )

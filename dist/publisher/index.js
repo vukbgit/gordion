@@ -277,7 +277,9 @@ git checkout -b main origin/main -f
 
         return false;
       } else {
-        _logger.logger.info(bump.stdout); //publish
+        const version = bump.stdout.replace(/^v/, '');
+
+        _logger.logger.info(version); //publish
 
 
         const publish = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('cd %s && npm publish', this.contexts[this.context].folder), {}, false);
@@ -296,7 +298,7 @@ git checkout -b main origin/main -f
             return false;
           } else {
             //update gordion version into webapp package.json without reinstalling
-            const publish = await _shellCommander.shellCommander.exec('npm i gordion --package-lock-only', {}, false);
+            const publish = await _shellCommander.shellCommander.exec((0, _sprintfJs.sprintf)('npm i gordion@%s --package-lock-only', version), {}, false);
             return true;
           }
         }
